@@ -16,7 +16,7 @@ module Sequences =
     let emptySequence = Seq.empty
 
     let findFirstFibNumberLargerThanN (n: int) =
-        failwith "www"
+        failwith ""
 
 module Maps = 
     let emptyMap = Map.empty

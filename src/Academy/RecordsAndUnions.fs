@@ -43,7 +43,7 @@ module LinkedList =
     let Find elem list = 
         failwith "Not Implemented"
     
-    let Sum func list = 
+    let Sum list = 
         failwith "Not Implemented"
 
 
