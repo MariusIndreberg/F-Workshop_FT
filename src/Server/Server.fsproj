@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Contracts/ContractTypes.fs" />
+    <Compile Include="Types/DbTypes.fs" />
+    <Compile Include="Types/Types.fs" />
+    <Compile Include="Pages/Enhet/EnhetRepository.fs" /> 
+    <Compile Include="Pages/Enhet/EnhetHandler.fs" /> 
+    <Compile Include="Server.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper.FSharp" Version="3.3.0" />
+    <PackageReference Include="FSharp.SystemTextJson" Version="0.19.13" />
+    <PackageReference Include="Giraffe" Version="5.0.0" />
+    <PackageReference Include="npgsql" Version="6.0.5" />
+  </ItemGroup>
+</Project>
