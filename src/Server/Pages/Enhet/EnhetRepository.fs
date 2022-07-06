@@ -7,30 +7,26 @@ open DbTypes
 open System.Threading.Tasks
 
 let conn = new Npgsql.NpgsqlConnection("Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=mysecretpassword;") :> IDbConnection
-let foretakTable = table<ForetakDB>
+let foretakTable = table'<ForetakDB> "foretak" |> inSchema "dbo" 
 
 let saveForetak (f : Foretak) = 
     insert {
         into foretakTable
         value (Foretak.ToDBType f)
-    } |> conn.InsertAsync
+    } |> conn.InsertAsync 
 
-let getForetak (id : int) = 
+let getForetak () = 
     select {
         for f in foretakTable do 
-        where (f.Id = id)
-    } |> conn.SelectAsync<Foretak>
+        selectAll
+    } |> conn.SelectAsync<ForetakDB>
 
 let saveEnhet (e : Enhet) = 
     match e with 
-    | Foretak f -> 
-        try 
-            Ok <| saveForetak f 
-        with
-            e -> Error e.Message 
-    | _ -> Ok <| Task.Factory.StartNew (fun x -> 1)
+    | Foretak f -> saveForetak f  
+    | _ -> Task.Factory.StartNew ( fun x ->  1)
 
-let getEnhet (e : Enhet) = 
+let getEnheter (e : Enhet) = 
     match e with 
-    | Foretak f -> getForetak 0
+    | Foretak f -> getForetak ()
     | _ -> Task.Factory.StartNew (fun x -> Seq.empty)

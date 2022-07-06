@@ -14,6 +14,16 @@ module ResultExtensions =
     let (<*>) = apply
     let (<!>) = Result.map
 
+    let retn = Ok
+    let cons head tail = head :: tail
+    let sequence list = 
+        // right fold over the list
+        let initState = retn []
+        let folder head tail =
+            retn cons <*> (id head) <*> tail
+
+        List.foldBack folder list initState
+
 [<AutoOpen>]
 module ValidatorFunctions = 
 
@@ -110,7 +120,7 @@ type Foretak = private {
 }
 module Foretak = 
     open DbTypes
-    let private make o n = {
+    let private make o n : Foretak = {
         Orgnummer = o 
         Navn = n
     }
@@ -122,15 +132,14 @@ module Foretak =
 
     let ToDBType (f : Foretak) : ForetakDB = 
         {
-            Id = 0
-            Navn = StringLength.value f.Navn 
-            Orgnummer = f.Orgnummer |> Option.map (OrgNummer.value)
+            navn = StringLength.value f.Navn 
+            orgnummer = f.Orgnummer |> Option.map (OrgNummer.value)
         }
 
     let FromDBtype (f : ForetakDB)  = 
         make 
-        <!> ( OrgNummer.CreateOpt f.Orgnummer)
-        <*> StringLength.create f.Navn 64
+        <!> ( OrgNummer.CreateOpt f.orgnummer)
+        <*> StringLength.create f.navn 64
 
 type Enhet = 
     | Person of Person 
