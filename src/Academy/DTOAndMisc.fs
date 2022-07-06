@@ -28,27 +28,46 @@ with
         Element elem
 
     member this.ToString () = 
-        failwith "Not implemented" 
+       failwith "not implemented"
 
 and Html = 
     | Element of Element 
     | Text of string
 
+let elt name attr elem = 
+    Element.Create name attr elem
+
+let attr name value = 
+    Attribute.Create name value 
+
+let html = elt "html"
+let head = elt "head"
+let meta = elt "meta"
+let body = elt "body"
+let a = elt "a"
+let div = elt "div"
+let href = attr "href"
+let img = elt "img"
+let src = attr "src"
+let charset = attr "charset"
+
+
 let stringify (root : Html) : string = 
     failwith "Not implemented"
 
-let html = 
-    Element.Create "html" [] [
-        Element.Create "head" [] [
-            Element.Create "meta" [ Attribute.Create "charset" "UTF-8" ] []
+let doc = 
+    html [] [
+        head [] [
+            meta [ charset "UTF-8" ] []
         ]
-        Element.Create "body" [] [
-            Element.Create "a" [ Attribute.Create "href" "https://google.no" ] [ Text "Click me" ]
-            Element.Create "div" [] [
-                Element.Create "img" [ Attribute.Create "src" "mypic.jpg" ] []
+        body [] [
+            a [ href "https://google.no" ] [ Text "Click me" ]
+            div [] [
+                img  [ src "mypic.jpg" ] []
             ]
         ]
     ]
+
 
 type ForetakKonsesjon = 
     | Bank 
